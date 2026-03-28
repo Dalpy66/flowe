@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Footer } from "../../share/footer/footer";
 import { Nav } from "../../share/nav/nav";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,15 +27,21 @@ export class ManagmentGarden implements OnInit{
     longitudine: null
   };
 
+  constructor(private cdr: ChangeDetectorRef){
+
+  }
+
   ngOnInit(): void {
     this.sensoriService.getStoricoBySensoreId(1).subscribe((data: Sensore) => {
       console.log(data)
       this.sensors.push(data)
+      this.cdr.detectChanges(); 
     })
 
     this.sensoriService.getStoricoBySensoreId(2).subscribe((data: Sensore) => {
       console.log(data)
       this.sensors.push(data)
+      this.cdr.detectChanges(); 
     })
   }
   
@@ -70,6 +76,7 @@ export class ManagmentGarden implements OnInit{
       latitudine: this.newSensor.latitudine,
       longitudine: this.newSensor.longitudine,
       nome_pianta: "",
+      report: "",
       id_sensore: 0,
       storico_misure: []
     });

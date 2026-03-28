@@ -14,14 +14,14 @@
   <div *ngFor="let sensor of sensors" class="mb-4 p-3 bg-white rounded shadow-sm">
 
     <div class="d-flex align-items-center mb-2">
-      <img [src]="sensor.stato_pianta" width="40" class="me-2 rounded-circle">
+      <img [src]="'assets/'+sensor.stato_pianta+'.svg'" width="40" class="me-2 rounded-circle">
       <h5 class="mb-0">Sensore {{ sensor.codice_sensore }}</h5>
 
-      <button class="btn btn-sm btn-success ms-auto"
+      <button class="btn btn-sm btn-secondary ms-auto"
               data-bs-toggle="modal"
               data-bs-target="#addPlantModal"
               (click)="setSelectedSensor(sensor)">
-        <i class="bi bi-plus-circle me-1"></i> Aggiungi pianta
+        <i class="bi bi-plus-circle me-1"></i> Cambia pianta
       </button>
     </div>
 
@@ -72,7 +72,7 @@
 
       <div class="modal-header">
         <h5 class="modal-title">
-          Aggiungi pianta a {{ selectedSensor?.codice_sensore }}
+          Cambia pianta a {{ selectedSensor?.codice_sensore }}
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>

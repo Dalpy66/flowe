@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Nav } from "../../share/nav/nav";
 import { Footer } from "../../share/footer/footer";
 import { AgCharts } from 'ag-charts-angular';
@@ -19,15 +19,13 @@ interface ChartConfig {
   selector: 'app-dashboard',
   imports: [Nav, Footer, AgCharts, CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css'], // ✅ corretto
+  styleUrls: ['./dashboard.css'],
 })
 export class Dashboard implements OnInit {
-  sensoriService: Sensoriservice = inject(Sensoriservice);
 
-  // storico completo di tutti i sensori
-  fullSensorsHistory: Sensore[] = [];
+  sensoriService = inject(Sensoriservice);
 
-  sensors: Sensore[] = []; // quello mostrato nel grafico
+  sensors: Sensore[] = [];
 
   availableSensors = [
     { id: 1, name: 'Sensor 1', id_convertitore: 'CONVERTER-M001' },
@@ -46,26 +44,46 @@ export class Dashboard implements OnInit {
     { label: 'Potassio', key: 'potassio', unit: 'mg/L', color: '#f39c12' },
   ];
 
+  constructor(private cdr: ChangeDetectorRef){
+
+  }
+
   ngOnInit() {
+    this.loadSensorHistory(this.selectedSensorId);
+  }
 
-    this.sensoriService.getStoricoBySensoreId(1).subscribe((data: Sensore) => {
-      console.log(data)
-      this.sensors.push(data)
-    })
+  loadSensorHistory(sensorId: number) {
+    this.sensoriService.getStoricoBySensoreId(sensorId).subscribe({
+      next: (data: Sensore) => {
+        console.log(data);
+        this.sensors = [data];
+        this.cdr.detectChanges(); 
+      },
+      error: (err) => {
+        console.error('Errore caricamento sensore:', err);
+      }
+    });
+  }
 
-    this.sensoriService.getStoricoBySensoreId(2).subscribe((data: Sensore) => {
-      console.log(data)
-      this.sensors.push(data)
-    })
-
+  onSensorChange() {
     this.loadSensorHistory(this.selectedSensorId);
   }
 
   getChartOptions(config: ChartConfig): any {
-    const data = this.sensors.map((s, idx) => ({
-      label: `Misura ${idx + 1}`,
-      value: s.storico_misure[config.key as any] as any,
-    }));
+
+    if (!this.sensors.length) return {};
+
+    const storico = this.sensors[0].storico_misure;
+
+    const data = Array.isArray(storico)
+      ? storico.map((m: any, idx: number) => ({
+        label: `Misura ${idx + 1}`,
+        value: m[config.key]
+      }))
+      : [{
+        label: 'Misura 1',
+        value: storico[config.key]
+      }];
 
     return {
       data,
@@ -84,21 +102,16 @@ export class Dashboard implements OnInit {
         {
           type: 'number',
           position: 'left',
-          label: { formatter: (p: any) => `${p.value} ${config.unit}` },
+          label: {
+            formatter: (p: any) => `${p.value} ${config.unit}`
+          },
         },
       ],
       background: { fill: 'transparent' },
     };
   }
 
-  onSensorChange() {
-    this.loadSensorHistory(this.selectedSensorId);
-  }
-
-  loadSensorHistory(sensorId: number) {
-    this.sensoriService.getStoricoBySensoreId(sensorId).subscribe((data: Sensore) => {
-      console.log(data)
-      this.sensors = [data]
-    })
+  trackByKey(index: number, item: any) {
+    return item.key;
   }
 }

@@ -7,5 +7,6 @@ export interface Sensore {
   latitudine: number;
   longitudine: number;
   nome_pianta: string;
+  report: string; 
   storico_misure: StoricoMisure[];
 }

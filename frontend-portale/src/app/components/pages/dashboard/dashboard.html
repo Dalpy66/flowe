@@ -1,26 +1,46 @@
 <app-nav></app-nav>
+
 <div class="dashboard">
-    <h1 class="dashboard-title">Monitoraggio Sensori</h1>
+  <h1 class="dashboard-title">Monitoraggio Sensori</h1>
 
-    <div class="sensor-selector mb-4">
-        <label for="sensorSelect">Seleziona sensore:</label>
-        <select id="sensorSelect" [(ngModel)]="selectedSensorId" (change)="onSensorChange()">
-            <option *ngFor="let sensor of availableSensors" [value]="sensor.id">
-                {{ sensor.name }} ({{ sensor.id_convertitore }})
-            </option>
-        </select>
+  <div class="sensor-selector mb-4">
+    <label for="sensorSelect">Seleziona sensore:</label>
+    
+    <select 
+      id="sensorSelect" 
+      [(ngModel)]="selectedSensorId" 
+      (change)="onSensorChange()"
+    >
+      <option 
+        *ngFor="let sensor of availableSensors" 
+        [value]="sensor.id"
+      >
+        {{ sensor.name }} ({{ sensor.id_convertitore }})
+      </option>
+    </select>
+  </div>
+
+  <div class="charts-grid">
+
+    <div 
+      class="chart-card"
+      *ngFor="let config of chartConfigs; trackBy: trackByKey"
+    >
+      <h2 class="chart-title">
+        {{ config.label }}
+        <span *ngIf="config.unit" class="unit">
+          ({{ config.unit }})
+        </span>
+      </h2>
+
+      <ag-charts 
+        [options]="getChartOptions(config)" 
+        style="height: 260px;"
+      ></ag-charts>
+
     </div>
 
-    <div class="charts-grid">
-        @for (config of chartConfigs; track config.key) {
-        <div class="chart-card">
-            <h2 class="chart-title">
-                {{ config.label }}
-                @if (config.unit) { <span class="unit">({{ config.unit }})</span> }
-            </h2>
-            <ag-charts [options]="getChartOptions(config)" style="height: 260px;" />
-        </div>
-        }
-    </div>
+  </div>
 </div>
+
 <app-footer></app-footer>

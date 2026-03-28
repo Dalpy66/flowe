@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Sensore } from '../../../responce/sensore';
 import { Alert } from '../alert/alert';
 import { Sensoriservice } from '../../../service/sensoriservice';
@@ -18,16 +18,22 @@ export class Carousel implements OnInit{
   isSliding = false; // evita click multipli veloci
 
   sensoriService: Sensoriservice = inject(Sensoriservice);
+
+  constructor(private cdr: ChangeDetectorRef){
+
+  }
   
   ngOnInit(): void {
     this.sensoriService.getStoricoBySensoreId(1).subscribe((data: Sensore) => {
       console.log(data)
       this.sensors.push(data)
+      this.cdr.detectChanges(); 
     })
 
     this.sensoriService.getStoricoBySensoreId(2).subscribe((data: Sensore) => {
       console.log(data)
       this.sensors.push(data)
+      this.cdr.detectChanges(); 
     })
   }
 
