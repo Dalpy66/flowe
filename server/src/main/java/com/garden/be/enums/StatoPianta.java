@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum StatoPianta {
-    SANO("sano"),
-    BUONO("buono"),
-    ALLERTA("allerta"),
-    CRITICO("critico");
+    sano("sano"),
+    buono("buono"),
+    allerta("allerta"),
+    critico("critico");
 
     private final String stato;
 }
