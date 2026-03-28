@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # 1. Hub / Traduttore
+  hub_service:
+    build: ./hub
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      # Lasciamo vuoto o mettiamo un URL fittizio finché non c'è il backend
+      - DESTINATION_SERVICE_URL=
+
+  # 2. IA Service
+  ai_service:
+    build: ./ai_service
+    ports:
+      - "8001:8000" # Raggiungibile dal PC su localhost:8001
+    env_file:
+      - .env
+
+  # 3. Simulatore Sensori
+  sensor_simulator:
+    build: ./sensori
+    environment:
+      # Comunica con l'hub usando il nome del servizio Docker
+      - HUB_API_URL=http://hub_service:8000/api/v1/sensori/hex-to-json
+    depends_on:
+      - hub_service
+
+  db:
+    container_name: db
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=garden
+    ports:
+      - 5432:5432
+    volumes:
+      - db_postgres_data:/var/lib/postgresql/data
+      - ./ddl.sql:/docker-entrypoint-initdb.d/ddl.sql
+volumes:
+  db_postgres_data:
