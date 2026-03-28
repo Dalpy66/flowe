@@ -54,6 +54,7 @@ export class Login extends CommonComponents {
     this.authService.login().subscribe({
       next: data => {
         console.log(data);
+        sessionStorage.setItem('listSensori', data.id_sensori.join(','))
         this.isLoading = false;
         this.router.navigate(['/home']);
       },

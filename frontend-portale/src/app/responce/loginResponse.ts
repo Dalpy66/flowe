@@ -5,5 +5,5 @@ export interface LoginResponse{
   idHub: string;
   latitudineHub: number;
   longitudineHub: number;
-  idSensori: number[];
+  id_sensori: number[];
 }

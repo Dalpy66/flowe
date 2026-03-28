@@ -9,7 +9,7 @@ import { LoginResponse } from '../responce/loginResponse';
 export class Auth {
   private readonly API_URL = '/api/auth';
   private readonly TOKEN_KEY = 'access_token';
-  private url: string = "localhost:8080"
+  private url: string = "http://localhost:8080"
  
   constructor(private http: HttpClient) {}
  

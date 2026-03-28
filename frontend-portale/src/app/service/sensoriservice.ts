@@ -8,7 +8,7 @@ import { Sensore } from '../responce/sensore';
 })
 export class Sensoriservice {
   private http: HttpClient = inject(HttpClient);
-  private url: string = "localhost:8080"
+  private url: string = "http://localhost:8080"
 
   getStoricoBySensoreId(sensorID: number): Observable<Sensore>{
     return this.http.get<Sensore>(this.url + "/storico-misure/storico/"+sensorID)
