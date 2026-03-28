@@ -10,7 +10,7 @@ services:
       - .env
     environment:
       # Lasciamo vuoto o mettiamo un URL fittizio finché non c'è il backend
-      - DESTINATION_SERVICE_URL=
+      - DESTINATION_SERVICE_URL=http://server-be:8080/storico-misure/register
 
   # 2. IA Service
   ai_service:
@@ -28,6 +28,13 @@ services:
       - HUB_API_URL=http://hub_service:8000/api/v1/sensori/hex-to-json
     depends_on:
       - hub_service
+
+  server-be:
+    container_name: server-be
+    build: ./server
+    image: server-be
+    ports:
+      - 8080:8080
 
   db:
     container_name: db

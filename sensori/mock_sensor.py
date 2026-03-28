@@ -5,7 +5,7 @@ import os
 
 API_URL = os.getenv("HUB_API_URL", "http://127.0.0.1:8000/api/v1/sensori/hex-to-json")
 
-def genera_payload_esadecimale(sensor_id='1'):
+def genera_payload_esadecimale(sensor_id="1"):
     """
     Genera una stringa esadecimale simulando la mappa dei registri Modbus.
     Crea valori casuali realistici per simulare le variazioni ambientali.
@@ -30,7 +30,7 @@ def genera_payload_esadecimale(sensor_id='1'):
     # {:02X} = formatta come Hex maiuscolo a 2 caratteri (1 byte)
     # {:04X} = formatta come Hex maiuscolo a 4 caratteri (2 byte)
     
-    intestazione = f"{sensor_id:02X}030E" # Nodo + Funzione + Byte Count
+    intestazione = f"{int(sensor_id):02X}030E" # Nodo + Funzione + Byte Count
     dati = f"{temp:04X}{umidita:04X}{ec:04X}{ph:04X}{n:04X}{p:04X}{k:04X}"
     
     hex_completo = intestazione + dati
@@ -44,7 +44,7 @@ def avvia_simulazione(intervallo_secondi=5):
     try:
         while True:
             # Scegliamo casualmente se simulare il sensore 1 o il sensore 2
-            id_sensore = random.choice(['1', '2'])
+            id_sensore = random.choice(["1", "2"])
             
             # Genera il dato finto
             hex_payload, temp_reale, hum_reale = genera_payload_esadecimale(sensor_id=id_sensore)
