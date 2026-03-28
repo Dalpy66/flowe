@@ -55,6 +55,7 @@ export class Login extends CommonComponents {
       next: data => {
         console.log(data);
         sessionStorage.setItem('listSensori', data.id_sensori.join(','))
+        sessionStorage.setItem('user', data.nome)
         this.isLoading = false;
         this.router.navigate(['/home']);
       },

@@ -10,4 +10,10 @@ import { Weather } from "../../shared/weather/weather";
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home {}
+export class Home {
+  readonly name: string;
+
+  constructor(){
+    this.name = sessionStorage.getItem('user') ?? '';
+  }
+}
