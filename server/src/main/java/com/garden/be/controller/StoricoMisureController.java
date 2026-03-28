@@ -19,6 +19,7 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/storico-misure")
+@CrossOrigin("*")
 public class StoricoMisureController {
     @Autowired
     private StoricoMisureService storicoMisureService;
