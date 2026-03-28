@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+import random
 
 # Carica variabili d'ambiente
 load_dotenv()
@@ -46,11 +47,12 @@ class PlantAnalysisResult(BaseModel):
 def generate_ai_report(data: SensorData) -> PlantAnalysisResult:
     # Modalità Mock (Senza Chiave)
     if not client:
-        # Finta logica per il Mock
-        stato: Literal["sano", "buono", "allerta", "critico"] = "buono"
-        if data.ph < 5.5 or data.ph > 7.5:
+        stato: Literal["sano", "buono", "allerta", "critico"] = random.choice(["sano", "buono"])
+        
+        if (data.ph < 6.4 or data.ph > 7.2) or (data.umidita < 50.0 or data.umidita > 75.0) or (data.temperatura > 27.0):
             stato = "allerta"
-        if data.umidita < 30.0 or data.temperatura > 35.0:
+            
+        if (data.ph < 6.1 or data.ph > 7.4) or data.umidita < 45.0 or data.temperatura > 29.0:
             stato = "critico"
             
         return PlantAnalysisResult(
