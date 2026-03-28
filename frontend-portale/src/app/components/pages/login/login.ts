@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Router } from '@angular/router';
 import { Auth } from '../../../service/auth';
 import { CommonComponents } from '../../share/commonComponents';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +12,12 @@ import { CommonComponents } from '../../share/commonComponents';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login extends CommonComponents{
+export class Login extends CommonComponents {
   loginForm!: FormGroup;
   isLoading = false;
   showPassword = false;
   errorMessage = '';
- 
+
   constructor(
     private fb: FormBuilder,
     private authService: Auth,
@@ -24,7 +25,7 @@ export class Login extends CommonComponents{
   ) {
     super();
   }
- 
+
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,49 +33,36 @@ export class Login extends CommonComponents{
       rememberMe: [false]
     });
   }
- 
+
   get email() { return this.loginForm.get('email')!; }
   get password() { return this.loginForm.get('password')!; }
- 
+
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
- 
+
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
- 
+    this.onLogin();
+  }
+
+  loginWithGoogle(): void {
+    this.onLogin();
+  }
+
+  onLogin() {
     this.isLoading = true;
-    this.errorMessage = '';
- 
-    const { email, password, rememberMe } = this.loginForm.value;
- 
-    /*this.authService.login(email, password, rememberMe).subscribe({
-      next: () => {
+    this.authService.login().subscribe({
+      next: data => {
+        console.log(data);
         this.isLoading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/home']);
       },
       error: (err: HttpErrorResponse) => {
+        console.log(err);
         this.isLoading = false;
-        this.errorMessage = err.message || 'Credenziali non valide. Riprova.';
+        this.router.navigate(['/home']);
       }
-    });*/
-
-    // TODO mock
-    this.isLoading = false;
-    this.isLoading = false;
-    this.router.navigate(['/home']);
-  }
- 
-  loginWithGoogle(): void {
-    //this.authService.loginWithGoogle();
-
-    // TODO mock
-    this.isLoading = false;
-    this.isLoading = false;
-    this.router.navigate(['/home']);
+    })
   }
 
 }

@@ -9,19 +9,12 @@ import { LoginResponse } from '../responce/loginResponse';
 export class Auth {
   private readonly API_URL = '/api/auth';
   private readonly TOKEN_KEY = 'access_token';
+  private url: string = "localhost:8080"
  
   constructor(private http: HttpClient) {}
  
-  login(email: string, password: string, rememberMe: boolean): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.API_URL}/login`, { email, password }).pipe(
-      tap(response => {
-        const storage = rememberMe ? localStorage : sessionStorage;
-      }),
-      catchError(err => {
-        const message = err.error?.message || 'Errore durante il login.';
-        return throwError(() => new Error(message));
-      })
-    );
+  login(): Observable<LoginResponse> {
+    return this.http.get<LoginResponse>(this.url + "/utenti/login/1");
   }
  
   logout(): void {

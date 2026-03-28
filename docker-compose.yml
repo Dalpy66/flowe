@@ -38,7 +38,7 @@ services:
 
   db:
     container_name: db
-    image: postgres:latest
+    image: postgres:15
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
