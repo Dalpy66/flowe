@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Nav } from "../../share/nav/nav";
 import { Footer } from "../../share/footer/footer";
 import { AgCharts } from 'ag-charts-angular';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoricoMisure } from '../../../responce/storicoMisure';
 import { Sensore } from '../../../responce/sensore';
+import { Sensoriservice } from '../../../service/sensoriservice';
 
 interface ChartConfig {
   label: string;
@@ -21,6 +22,7 @@ interface ChartConfig {
   styleUrls: ['./dashboard.css'], // ✅ corretto
 })
 export class Dashboard implements OnInit {
+  sensoriService: Sensoriservice = inject(Sensoriservice);
 
   // storico completo di tutti i sensori
   fullSensorsHistory: Sensore[] = [];
@@ -30,7 +32,6 @@ export class Dashboard implements OnInit {
   availableSensors = [
     { id: 1, name: 'Sensor 1', id_convertitore: 'CONVERTER-M001' },
     { id: 2, name: 'Sensor 2', id_convertitore: 'CONVERTER-M002' },
-    { id: 3, name: 'Sensor 3', id_convertitore: 'CONVERTER-M003' },
   ];
 
   selectedSensorId: number = 1;
@@ -46,6 +47,17 @@ export class Dashboard implements OnInit {
   ];
 
   ngOnInit() {
+
+    this.sensoriService.getStoricoBySensoreId(1).subscribe((data: Sensore) => {
+      console.log(data)
+      this.sensors.push(data)
+    })
+
+    this.sensoriService.getStoricoBySensoreId(2).subscribe((data: Sensore) => {
+      console.log(data)
+      this.sensors.push(data)
+    })
+
     this.loadSensorHistory(this.selectedSensorId);
   }
 
@@ -84,7 +96,9 @@ export class Dashboard implements OnInit {
   }
 
   loadSensorHistory(sensorId: number) {
-    const filtered = this.fullSensorsHistory.filter(s => s.id_sensore === sensorId);
-    this.sensors = [...filtered]; // crea un nuovo array, AG Charts lo aggiornerà
+    this.sensoriService.getStoricoBySensoreId(sensorId).subscribe((data: Sensore) => {
+      console.log(data)
+      this.sensors = [data]
+    })
   }
 }

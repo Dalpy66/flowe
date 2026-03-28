@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Footer } from "../../share/footer/footer";
 import { Nav } from "../../share/nav/nav";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Sensore } from '../../../responce/sensore';
+import { Sensoriservice } from '../../../service/sensoriservice';
 
 @Component({
   selector: 'app-managment-garden',
@@ -11,7 +12,9 @@ import { Sensore } from '../../../responce/sensore';
   templateUrl: './managment-garden.html',
   styleUrl: './managment-garden.css',
 })
-export class ManagmentGarden {
+export class ManagmentGarden implements OnInit{
+  
+  sensoriService: Sensoriservice = inject(Sensoriservice);
   sensors: Sensore[] = [];
 
   selectedSensor: any = null;
@@ -23,6 +26,19 @@ export class ManagmentGarden {
     latitudine: null,
     longitudine: null
   };
+
+  ngOnInit(): void {
+    this.sensoriService.getStoricoBySensoreId(1).subscribe((data: Sensore) => {
+      console.log(data)
+      this.sensors.push(data)
+    })
+
+    this.sensoriService.getStoricoBySensoreId(2).subscribe((data: Sensore) => {
+      console.log(data)
+      this.sensors.push(data)
+    })
+  }
+  
 
   setSelectedSensor(sensor: any) {
     this.selectedSensor = sensor;
