@@ -57,6 +57,7 @@ public class StoricoMisureController {
             return this.storicoMisureService.getReport(sensore, storicoMisure.getFirst())
                     .thenApply(report -> ResponseEntity.ok(SensoreDTO.fromSensore(sensore, storicoMisure, report)));
         }).exceptionally(ex -> {
+            System.out.println("Errore durante il recupero dello storico per sensore " + idSensore + " " +  ex.getCause());
             if (ex.getCause() instanceof NoSuchElementException) return ResponseEntity.noContent().build();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         });

@@ -74,4 +74,4 @@ def avvia_simulazione(intervallo_secondi=5):
         print("\nSimulazione interrotta dall'utente.")
 
 if __name__ == "__main__":
-    avvia_simulazione(intervallo_secondi=4)
+    avvia_simulazione(intervallo_secondi=60)
