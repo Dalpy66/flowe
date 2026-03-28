@@ -36,6 +36,13 @@ services:
     ports:
       - 8080:8080
 
+  frontend_portale:
+     container_name: frontend_portale
+     build:
+       context: ./frontend-portale
+     ports:
+       - 80:80
+
   db:
     container_name: db
     image: postgres:15
