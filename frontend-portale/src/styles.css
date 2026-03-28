@@ -1,0 +1,161 @@
+/* =========================
+   FONT
+   ========================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #FFFFFF; /* sfondo bianco di default */
+  margin: 0;
+  padding: 0;
+}
+
+.text-white{
+    color: var(--color-bg-white) !important;
+}
+
+/* =========================
+   COLORI PRIMARI E SECONDARI
+   ========================= */
+:root {
+  --color-primary: #495924;   /* verde scuro */
+  --color-secondary: #A7AA64; /* verde più chiaro */
+  --color-orange: #E9975A;    /* arancio */
+  --color-red: #B63E23;       /* rosso */
+  --color-bg-white: #FFFFFF;  /* sfondo bianco */
+}
+
+/* Testo su sfondo colorato bianco */
+.text-on-white {
+  color: var(--color-primary);
+  background-color: var(--color-bg-white);
+}
+
+/* Bottoni principali */
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-bg-white);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+/* Bottoni arancio e rosso */
+.btn-orange {
+  background-color: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--color-bg-white);
+}
+
+.btn-orange:hover {
+  background-color: darken(var(--color-orange), 10%);
+}
+
+.btn-red {
+  background-color: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-bg-white);
+}
+
+.btn-red:hover {
+  background-color: darken(var(--color-red), 10%);
+}
+
+/* Link primari */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+/* Background personalizzati */
+.bg-primary {
+  background-color: var(--color-primary);
+  color: var(--color-bg-white);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-bg-white);
+}
+
+.bg-orange {
+  background-color: var(--color-orange);
+  color: var(--color-bg-white);
+}
+
+.bg-red {
+  background-color: var(--color-red);
+  color: var(--color-bg-white);
+}
+
+/* =========================
+   ELEMENTI TIPOGRAFICI
+   ========================= */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  color: var(--color-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+p, span, label {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* =========================
+   LINK
+   ========================= */
+
+/* Link primari standard */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.3s, text-decoration 0.3s;
+}
+
+a:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+/* Link arancio */
+a.orange-link {
+  color: var(--color-orange);
+}
+
+a.orange-link:hover {
+  color: darken(var(--color-orange), 10%);
+  text-decoration: underline;
+}
+
+/* Link rosso */
+a.red-link {
+  color: var(--color-red);
+}
+
+a.red-link:hover {
+  color: darken(var(--color-red), 10%);
+  text-decoration: underline;
+}
+
+/* Link su sfondo bianco (testo colorato) */
+a.on-white {
+  color: var(--color-primary);
+}
+
+a.on-white:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+.dropdown-item:hover {
+  background-color: var(--color-primary);
+  color: var(--color-bg-white);
+}

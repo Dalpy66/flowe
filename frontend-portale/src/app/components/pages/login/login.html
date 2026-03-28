@@ -1,0 +1,118 @@
+<div class="login-wrapper d-flex align-items-center justify-content-center min-vh-100" style="background: #f4f6f9;">
+  <div class="login-card card shadow-sm p-4 p-md-5">
+
+    <!-- Header -->
+    <div class="text-center">
+      <div class="brand-icon mb-3">
+        <img src="assets/favicon.svg" alt="Brand Logo" class="img-fluid" style="width: 80px; height: 80px;" />
+      </div>
+      <h1 class="h3 fw-bold mb-2">Benvenuto di nuovo!</h1>
+      <p class="text-muted fs-6">Accedi al tuo account inserendo le tue credenziali</p>
+    </div>
+
+    <!-- Alert errore -->
+    <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center gap-2 py-2" role="alert">
+      <i class="bi bi-exclamation-circle-fill flex-shrink-0"></i>
+      <span class="small">{{ errorMessage }}</span>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label small fw-medium">Indirizzo email</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-envelope"></i>
+          </span>
+          <input id="email" type="email" class="form-control" [class.is-invalid]="email.invalid && email.touched"
+            [class.is-valid]="email.valid && email.touched" formControlName="email" placeholder="tu@esempio.com"
+            autocomplete="email" />
+          <div class="invalid-feedback">
+            <span *ngIf="email.errors?.['required']">L'email è obbligatoria.</span>
+            <span *ngIf="email.errors?.['email']">Inserisci un'email valida.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <label for="password" class="form-label small fw-medium mb-0">Password</label>
+          <a routerLink="/forgot-password" class="small link-primary text-decoration-none">
+            Password dimenticata?
+          </a>
+        </div>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-lock"></i>
+          </span>
+          <input id="password" [type]="showPassword ? 'text' : 'password'" class="form-control"
+            [class.is-invalid]="password.invalid && password.touched"
+            [class.is-valid]="password.valid && password.touched" formControlName="password" placeholder="••••••••"
+            autocomplete="current-password" />
+          <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()"
+            [attr.aria-label]="showPassword ? 'Nascondi password' : 'Mostra password'">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+          <div class="invalid-feedback">
+            <span *ngIf="password.errors?.['required']">La password è obbligatoria.</span>
+            <span *ngIf="password.errors?.['minlength']">Minimo 6 caratteri.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ricordami -->
+      <div class="mb-4">
+        <div class="form-check">
+          <input id="rememberMe" type="checkbox" class="form-check-input" formControlName="rememberMe" />
+          <label for="rememberMe" class="form-check-label small text-muted">
+            Ricordami per 30 giorni
+          </label>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit"
+        class="btn btn-primary w-100 text-white d-flex align-items-center justify-content-center gap-2"
+        [disabled]="isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm text-white" role="status"
+          aria-hidden="true"></span>
+        <span>{{ isLoading ? 'Accesso in corso…' : 'Accedi' }}</span>
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div class="divider my-4 text-muted small text-center">oppure continua con</div>
+
+    <!-- OAuth -->
+    <div class="d-grid gap-2 d-sm-flex">
+      <button type="button"
+        class="btn btn-outline-secondary flex-fill d-flex align-items-center justify-content-center gap-2"
+        (click)="loginWithGoogle()">
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M14.5 8.16c0-.52-.05-1.02-.13-1.5H8v2.84h3.65a3.12 3.12 0 01-1.35 2.04v1.7h2.19c1.28-1.18 2.01-2.92 2.01-5.08z"
+            fill="#4285F4" />
+          <path
+            d="M8 15c1.84 0 3.38-.61 4.5-1.66l-2.19-1.7c-.61.41-1.38.65-2.31.65-1.78 0-3.29-1.2-3.83-2.81H1.91v1.75A7 7 0 008 15z"
+            fill="#34A853" />
+          <path
+            d="M4.17 9.48A4.2 4.2 0 013.95 8c0-.52.09-1.02.22-1.48V4.77H1.91A7 7 0 001 8c0 1.13.27 2.2.91 3.23l2.26-1.75z"
+            fill="#FBBC04" />
+          <path d="M8 3.71c1 0 1.9.34 2.61 1.02l1.96-1.96A7 7 0 001.91 4.77l2.26 1.75C4.71 4.91 6.22 3.71 8 3.71z"
+            fill="#EA4335" />
+        </svg>
+        Google
+      </button>
+    </div>
+
+    <!-- Registrazione -->
+    <p class="text-center text-muted small mt-4 mb-0">
+      Non hai un account?
+      <a (click)="onNavigate('register')" class="link-primary text-decoration-none fw-medium">Registrati</a>
+    </p>
+
+  </div>
+</div>

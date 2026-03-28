@@ -1,0 +1,37 @@
+<header class="py-3 border-bottom logo-container">
+    <div class="container-fluid d-grid gap-3" style="grid-template-columns: 2fr 1fr;">
+        
+        <!-- LEFT (vuoto o contenuto futuro) -->
+        <div class="d-flex justify-content-start align-items-center logo-container" (click)="onNavigate('home')">
+    <img src="assets/LOGO.svg" class="logo-img">
+</div>
+
+        <!-- RIGHT -->
+        <div class="d-flex justify-content-end align-items-center">
+            
+
+            <div class="flex-shrink-0 dropdown ms-3">
+                <a href="#"
+                   class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <img src="https://github.com/mdo.png"
+                         alt="mdo"
+                         width="32"
+                         height="32"
+                         class="rounded-circle">
+                </a>
+
+                <ul class="dropdown-menu text-small shadow">
+                    <li><a class="dropdown-item" (click)="onNavigate('home')">Home</a></li>
+                    <li><a class="dropdown-item" (click)="onNavigate('dashboard')">Dashboard</a></li>
+                    <li><a class="dropdown-item" (click)="onNavigate('managmentGarden')">Organizza giardino</a></li>
+                    <li><a class="dropdown-item" (click)="onNavigate('login')">Sign out</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item">UUID HUB: 123</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</header>

@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-center align-items-center min-vh-100"
+style="background: #f4f6f9;">
+
+  <div class="wizard-card shadow-lg p-5 rounded-4 bg-white">
+
+    <!-- Progress Bar -->
+    <div class="progress mb-4" style="height: 8px; border-radius: 4px;">
+      <div class="progress-bar bg-primary" role="progressbar" 
+           [style.width.%]="(step / 4) * 100"></div>
+    </div>
+
+    <!-- Step Title -->
+    <h4 class="text-center mb-4">
+      <span *ngIf="step === 1">👤 Crea account</span>
+      <span *ngIf="step === 2">📡 Collega hotspot</span>
+      <span *ngIf="step === 3">📟 Collega sensore</span>
+      <span *ngIf="step === 4">✅ Completato</span>
+    </h4>
+
+    <!-- STEP 1 -->
+    <form *ngIf="step === 1" [formGroup]="form" (ngSubmit)="nextStep()">
+      <div class="mb-3">
+        <input formControlName="name" class="form-control" placeholder="Nome">
+        <div class="text-danger small mt-1" *ngIf="f['name'].touched && f['name'].invalid">
+          Nome richiesto (min 2 caratteri)
+        </div>
+      </div>
+      <div class="mb-3">
+        <input formControlName="email" class="form-control" placeholder="Email">
+        <div class="text-danger small mt-1" *ngIf="f['email'].touched && f['email'].invalid">
+          Email non valida
+        </div>
+      </div>
+      <div class="mb-3">
+        <input type="password" formControlName="password" class="form-control" placeholder="Password">
+        <div class="text-danger small mt-1" *ngIf="f['password'].touched && f['password'].invalid">
+          Password richiesta (min 6 caratteri)
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Continua</button>
+    </form>
+
+    <!-- STEP 2 -->
+    <div *ngIf="step === 2">
+      <p class="text-muted small text-center mb-2">
+        Inserisci l'UUID dell'hotspot per stabilire la connessione
+      </p>
+      <input formControlName="hotspotUuid" class="form-control mb-2" placeholder="UUID Hotspot">
+      <div class="text-danger small mt-1" *ngIf="f['hotspotUuid'].touched && f['hotspotUuid'].invalid">
+        UUID non valido
+      </div>
+
+      <div class="d-flex justify-content-between mt-3">
+        <button class="btn btn-light" (click)="prevStep()">Indietro</button>
+        <button class="btn btn-primary" (click)="nextStep()">Verifica</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div *ngIf="step === 3">
+      <p class="text-muted small text-center mb-2">
+        Inserisci l'UUID del dispositivo sensore
+      </p>
+      <input formControlName="sensorUuid" class="form-control mb-2" placeholder="UUID Sensore">
+      <div class="text-danger small mt-1" *ngIf="f['sensorUuid'].touched && f['sensorUuid'].invalid">
+        UUID sensore non valido
+      </div>
+
+      <div class="d-flex justify-content-between mt-3">
+        <button class="btn btn-light" (click)="prevStep()">Indietro</button>
+        <button class="btn btn-primary" (click)="nextStep()">Verifica</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div *ngIf="step === 4" class="text-center mt-4">
+      <div class="display-1 mb-3">🎉</div>
+      <h5>Registrazione completata!</h5>
+      <p class="text-muted mb-3">Il tuo dispositivo è pronto all'uso</p>
+      <button class="btn btn-success w-100" (click)="onNavigate('home')">Vai alla Home</button>
+    </div>
+
+  </div>
+</div>

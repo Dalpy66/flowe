@@ -1,0 +1,20 @@
+@if (weatherData) {
+<div class="weather-container">
+  <div class="weather-card">
+    <h3>Temperatura</h3>
+    <p>{{ weatherData.main.temp }} °C</p>
+  </div>
+  <div class="weather-card">
+    <h3>Condizione</h3>
+    <p>{{ weatherData.weather[0].description }}</p>
+  </div>
+  <div class="weather-card">
+    <h3>Umidità</h3>
+    <p>{{ weatherData.main.humidity }} hPa</p>
+  </div>
+  <div class="weather-card">
+    <h3>Vento</h3>
+    <p>{{ weatherData.wind.speed }} m/s</p>
+  </div>
+</div>
+}

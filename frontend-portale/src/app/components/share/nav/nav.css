@@ -1,0 +1,11 @@
+/* Colore dello sfondo del contenitore */
+.logo-container {
+    background-color: #f0f0f0; /* grigio chiaro */
+    padding: 10px; /* un po' di spazio interno */
+    border-radius: 8px; /* angoli arrotondati */
+}
+
+/* Colore del logo (se è un SVG puoi cambiare il fill) */
+.logo-img {
+    width: 100px; /* dimensione del logo */
+}

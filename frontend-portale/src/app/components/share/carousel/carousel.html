@@ -1,0 +1,95 @@
+<div class="container-fluid py-3">
+  <app-alert [message]="msg"></app-alert>
+  <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
+
+    <!-- CAROSELLO SINISTRA -->
+    <div class="carousel-wrapper position-relative bg-light rounded-3 overflow-hidden">
+      <div class="carousel-inner">
+        <div *ngFor="let sensor of sensors; let i = index" class="carousel-item" [class.active]="i === currentIndex">
+          <img [src]="sensor.stato_pianta" class="d-block w-100" [alt]="sensor.stato_pianta">
+        </div>
+      </div>
+
+      <!-- Frecce piccole -->
+      <button class="carousel-control-prev custom-arrow" (click)="prevSlide()">
+        ‹
+      </button>
+      <button class="carousel-control-next custom-arrow" (click)="nextSlide()">
+        ›
+      </button>
+    </div>
+
+    <!-- CAROSELLO DESTRA (SENSORI) -->
+    <div class="carousel-wrapper position-relative bg-light rounded-3 overflow-hidden">
+      <div *ngFor="let sensor of sensors; let i = index"
+         class="carousel-item"
+         [class.active]="i === currentIndex">
+
+      <!-- Header sensore -->
+      <div class="sensor-header">
+        <div class="sensor-id">
+          <span class="sensor-dot"></span>
+          Sensor {{ sensor.id_sensore }}
+        </div>
+        <span class="converter-id">{{ sensor.codice_sensore }}</span>
+      </div>
+
+      <!-- Griglia valori -->
+      <div class="sensor-grid">
+
+        <div class="sensor-card temp">
+          <span class="card-label">Temperatura</span>
+          <span class="card-value">{{ sensor.storico_misure[0].temperatura }}</span>
+          <span class="card-unit">°C</span>
+        </div>
+
+        <div class="sensor-card hum">
+          <span class="card-label">Umidità</span>
+          <span class="card-value">{{ sensor.storico_misure[0].umidita }}</span>
+          <span class="card-unit">%</span>
+        </div>
+
+        <div class="sensor-card cond">
+          <span class="card-label">Conducibilità</span>
+          <span class="card-value">{{ sensor.storico_misure[0].conducibilita }}</span>
+          <span class="card-unit">µS/cm</span>
+        </div>
+
+        <div class="sensor-card ph">
+          <span class="card-label">pH</span>
+          <span class="card-value">{{ sensor.storico_misure[0].ph }}</span>
+          <span class="card-unit">&nbsp;</span>
+        </div>
+
+        <div class="sensor-card azoto">
+          <span class="card-label">Azoto</span>
+          <span class="card-value">{{ sensor.storico_misure[0].azoto }}</span>
+          <span class="card-unit">mg/L</span>
+        </div>
+
+        <div class="sensor-card fosforo">
+          <span class="card-label">Fosforo</span>
+          <span class="card-value">{{ sensor.storico_misure[0].fosforo }}</span>
+          <span class="card-unit">mg/L</span>
+        </div>
+
+        <div class="sensor-card potassio">
+          <span class="card-label">Potassio</span>
+          <span class="card-value">{{ sensor.storico_misure[0].potassio }}</span>
+          <span class="card-unit">mg/L</span>
+        </div>
+
+      </div>
+    </div>
+
+      <!-- Frecce piccole -->
+      <button class="carousel-control-prev custom-arrow" (click)="prevSlide()">
+        ‹
+      </button>
+      <button class="carousel-control-next custom-arrow" (click)="nextSlide()">
+        ›
+      </button>
+    </div>
+
+  </div>
+</div>

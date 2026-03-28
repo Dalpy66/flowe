@@ -1,0 +1,95 @@
+<app-nav></app-nav>
+
+<div class="px-2 py-4" style="background: #f4f6f9;">
+
+  <!-- HEADER -->
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h2 class="h4 fw-bold">Gestione Sensori e Piante</h2>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSensorModal">
+      <i class="bi bi-plus-circle me-1"></i> Aggiungi Sensore
+    </button>
+  </div>
+
+  <!-- LISTA SENSORI -->
+  <div *ngFor="let sensor of sensors" class="mb-4 p-3 bg-white rounded shadow-sm">
+
+    <div class="d-flex align-items-center mb-2">
+      <img [src]="sensor.stato_pianta" width="40" class="me-2 rounded-circle">
+      <h5 class="mb-0">Sensore {{ sensor.codice_sensore }}</h5>
+
+      <button class="btn btn-sm btn-success ms-auto"
+              data-bs-toggle="modal"
+              data-bs-target="#addPlantModal"
+              (click)="setSelectedSensor(sensor)">
+        <i class="bi bi-plus-circle me-1"></i> Aggiungi pianta
+      </button>
+    </div>
+
+    <h6 class="mt-3">Pianta monitorata: {{sensor.nome_pianta}}</h6>
+
+  </div>
+</div>
+
+<!-- MODALE AGGIUNGI SENSORE -->
+<div class="modal fade" id="addSensorModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Aggiungi Sensore</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <input class="form-control mb-2" placeholder="Codice sensore"
+               [(ngModel)]="newSensor.codice_sensore">
+
+        <input class="form-control mb-2" placeholder="Nome pianta"
+               [(ngModel)]="newSensor.nome_pianta">
+
+        <input class="form-control mb-2" type="number"
+               placeholder="Latitudine"
+               [(ngModel)]="newSensor.latitudine">
+
+        <input class="form-control mb-2" type="number"
+               placeholder="Longitudine"
+               [(ngModel)]="newSensor.longitudine">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button class="btn btn-primary" (click)="addSensor()">Salva</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODALE AGGIUNGI PIANTA -->
+<div class="modal fade" id="addPlantModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Aggiungi pianta a {{ selectedSensor?.codice_sensore }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <input class="form-control"
+               placeholder="Nome pianta"
+               [(ngModel)]="newPlantName">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button class="btn btn-primary" (click)="addPlant()">Aggiungi</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

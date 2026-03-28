@@ -1,0 +1,147 @@
+.carousel-wrapper {
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Header */
+.sensor-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sensor-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1a2332;
+  flex: 1;
+}
+
+.sensor-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #27ae60;
+  display: inline-block;
+}
+
+.converter-id {
+  font-size: 0.78rem;
+  color: #6b7280;
+  background: #e9ecef;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.sensor-status-icon {
+  width: 28px;
+  height: 28px;
+}
+
+/* Griglia */
+.sensor-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 16px 20px 20px;
+}
+
+@media (max-width: 600px) {
+  .sensor-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Card singola */
+.sensor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 10px 10px;
+  border-radius: 12px;
+  gap: 2px;
+  border: 1px solid transparent;
+}
+
+.card-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+.card-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.card-unit {
+  font-size: 0.72rem;
+  opacity: 0.6;
+}
+
+/* Colori per tipologia */
+.temp   { background: #fff4ec; border-color: #fddcca; color: #7c3419; }
+.hum    { background: #eff8ff; border-color: #bfdbfe; color: #1e4e8c; }
+.cond   { background: #f5f0ff; border-color: #ddd6fe; color: #4c1d95; }
+.ph     { background: #f0fdf4; border-color: #bbf7d0; color: #14532d; }
+.azoto  { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+.fosforo{ background: #fff7ed; border-color: #fed7aa; color: #9a3412; }
+.potassio{background: #fef9c3; border-color: #fde047; color: #713f12; }
+
+/* Navigazione */
+.carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 0 14px;
+  border-top: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.nav-btn {
+  background: none;
+  border: 1px solid #d1d5db;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+  color: #374151;
+  transition: background 0.15s;
+}
+
+.nav-btn:hover {
+  background: #f3f4f6;
+}
+
+.nav-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d1d5db;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.dot.active {
+  background: #3b82f6;
+  transform: scale(1.3);
+}
