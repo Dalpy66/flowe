@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+            /*
+                FONT: Poppins Regular
+                COLORI: 
+                colore font su sfondo colorato bianco #FFFFFF, 
+                colore primario verde scuro #495924, 
+                colore secondario verde piu chiaro #A7AA64, 
+                arancio #E9975A, rosso #B63E23
+            */
+
+
+        :root {
+
+            --white:   #A7AA64;
+            --night:  #495924;
+            --cream:  #f5f2ec;
+            --mid:    #2c4a29;
+            --white:  #ffffff;
+            --orange: #E9975A;
+            --red:    #B63E23;
+        }
+
+        * { font-family: 'Poppins', sans-serif; }
+
+        /* ─── HERO ─── */
+        #home {
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: var(--night);
+        }
+
+        /* Fixed parallax background layer */
+        .hero-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: url('bg1.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            /* Subtle Ken-Burns for life when no video */
+            animation: kenBurns 18s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes kenBurns {
+            from { transform: scale(1)    translateX(0px); }
+            to   { transform: scale(1.07) translateX(-18px); }
+        }
+
+        /* Dark overlay so white text always pops */
+        .hero-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(
+                160deg,
+                rgba(13, 22, 12, 0.72) 0%,
+                rgba(13, 22, 12, 0.55) 60%,
+                rgba(13, 22, 12, 0.80) 100%
+            );
+            pointer-events: none;
+        }
+
+        /* Clip: bg + overlay visible only inside the hero */
+        #home .hero-bg,
+        #home .hero-overlay {
+            clip-path: none;
+        }
+
+        /* All sections that come AFTER hero sit on top */
+        section, footer, nav { position: relative; z-index: 10; }
+        nav { z-index: 50; }
+
+        /* ─── NAV ─── */
+        .nav-link {
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 1.5px;
+            background: var(--white);
+            transition: width .3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* ─── CTA BUTTON with dots (Farm Minerals style) ─── */
+        .btn-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .85rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transition: transform .25s, box-shadow .25s;
+            padding: 14px 28px;
+        }
+        .btn-dot:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,.25); }
+        .dot-icon {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ─── GALLERY ─── */
+        .snap-x { scroll-snap-type: x mandatory; }
+        .snap-center { scroll-snap-align: center; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* ─── ABOUT IMAGES placeholder ─── */
+        .about-img {
+            width: 100%;
+            height: 340px;
+            background: linear-gradient(135deg, var(--night) 0%, var(--mid) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            flex-shrink: 0;
+        }
+
+        /* ─── FADE IN UP ─── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .8s ease, transform .8s ease;
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* ─── MODAL ─── */
+        #purchase-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(13, 22, 12, 0.82);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        #purchase-modal.open { display: flex; }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 24px;
+            padding: 2.5rem 2.5rem 2rem;
+            max-width: 520px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 32px 80px rgba(0,0,0,.35);
+        }
+
+        .modal-input {
+            width: 100%;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-family: 'Poppins', sans-serif;
+            font-size: .9rem;
+            outline: none;
+            transition: border-color .2s;
+        }
+        .modal-input:focus { border-color: var(--night); }
+
+        .modal-label {
+            font-size: .75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: #6b7280;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* ─── SUCCESS OVERLAY (inside modal) ─── */
+        .success-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            border-radius: 24px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            gap: 1rem;
+        }
+        .success-overlay.show { display: flex; }
+        .checkmark {
+            width: 72px; height: 72px;
+            background: var(--night);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--white);
+            font-size: 2rem;
+        }
+
+        /* ─── STAT BAND ─── */
+        .stat-band {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(200,224,182,.2);
+            border-bottom: 1px solid rgba(200,224,182,.2);
+        }
+        .stat-item {
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-right: 1px solid rgba(200,224,182,.2);
+        }
+        .stat-item:last-child { border-right: none; }
+
+        /* Scrollbar for modal */
+        .modal-box::-webkit-scrollbar { width: 5px; }
+        .modal-box::-webkit-scrollbar-track { background: transparent; }
+        .modal-box::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 99px; }
+
+        /* Rende l'overlay parte del flusso del documento quando visibile, dettando l'altezza del modal */
+        .success-overlay.show { 
+            display: flex; 
+            position: relative; 
+            inset: auto;
+        }
+
+        /* Nasconde il form, i titoli e la "X" di chiusura quando l'overlay è attivo */
+        .modal-box:has(.success-overlay.show) > :not(.success-overlay) {
+            display: none;
+        }
+
+        /* Bordi rossi per i campi non validi dopo il primo tentativo di invio */
+        .form-submitted .modal-input:invalid {
+            border-color: var(--red);
+            background-color: #fff5f3; /* Un leggero sfondo rossastro */
+        }
+
+        /* Sostituisce il focus standard con uno coerente al colore di errore */
+        .form-submitted .modal-input:invalid:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(182, 62, 35, 0.15);
+        }
+
+        /* Opzionale: feedback positivo per i campi corretti */
+        .form-submitted .modal-input:valid {
+            border-color: var(--night);
+        }
+
+    </style>
+</head>
+<body class="bg-[#f5f2ec] text-[var(--night)]">
+
+    <!-- ══════════════ FIXED BG LAYERS (hero only via clip) ══════════════ -->
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay" id="heroOverlay"></div>
+
+    <!-- ══════════════ NAV ══════════════ -->
+    <nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-10 py-4
+                bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 transition-all">
+        <a href="#home" class="flex items-center hover:opacity-75 transition-opacity">
+            <img src="LOGO flowe.svg" alt="Flowe logo" class="h-10 md:h-12 w-auto object-contain">
+        </a>
+        <ul class="hidden md:flex space-x-8 font-semibold text-xs uppercase tracking-widest items-center">
+            <li><a href="#galleria"     class="nav-link hover:opacity-75 transition-opacity">Il mondo Flowe</a></li>
+            <li><a href="#chi-siamo"    class="nav-link hover:opacity-75 transition-opacity">Chi Siamo</a></li>
+            <li><a href="#punti-forza"  class="nav-link hover:opacity-75 transition-opacity">Punti di Forza</a></li>
+            <li>
+                <a href="#acquisti" class="btn-dot" style="background:var(--night);color:var(--white);">
+                    <span class="dot-icon" style="background:var(--white)"></span>
+                    Acquista Ora
+                    <span class="dot-icon" style="background:var(--white)"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ══════════════ HERO ══════════════ -->
+    
+    <header id="home" class="relative h-screen overflow-hidden">
+
+    <video autoplay muted loop playsinline
+           class="absolute top-0 left-0 w-full h-full object-cover">
+        <source src="bg1.mp4" type="video/mp4">
+        Il tuo browser non supporta i video.
+    </video>
+
+
+    <!-- Contenuto -->
+    <div class="relative z-10 h-full flex items-center justify-end px-6 md:px-16">
+        
+        <div class="w-full md:w-3/4 lg:w-2/5 text-right py-32">
+            
+            <span class="fade-up text-xs font-bold uppercase tracking-[.25em] mb-5 block text-white/60">
+                Risparmia acqua, tempo e fatica con la potenza dell'AI
+            </span>
+
+            <h1 class="fade-up text-5xl md:text-6xl lg:text-7xl font-black mb-6 uppercase tracking-tight leading-[1.05] text-white" style="animation-delay:.1s">
+                Un giardino<br/> sempre in equilibrio
+            </h1>
+
+            <p class="fade-up text-lg md:text-xl mb-12 font-light text-white/80" style="animation-delay:.2s">
+                Trasformiamo dati frammentati in decisioni semplici e concrete. Nessuno ci dice davvero se il nostro giardino sta bene e cosa fare, qui e ora. Noi sì.
+            </p>
+
+            <a href="#acquisti" class="fade-up btn-dot inline-flex justify-end" style="background:var(--white);color:var(--night);animation-delay:.3s">
+                <span class="dot-icon" style="background:var(--night)"></span>
+                Scopri i Kit
+                <span class="dot-icon" style="background:var(--night)"></span>
+            </a>
+
+        </div>
+    </div>
+
+</header>
+    <!-- <header id="home" class="pt-20">
+        <div class="relative z-10 max-w-5xl mx-auto text-center py-32 px-6">
+            <span class="fade-up text-xs font-bold uppercase tracking-[.25em] mb-5 block text-white/60">
+                Risparmia acqua, tempo e fatica con la potenza dell'AI al servizio del tuo verde.
+                Controllo e semplicità per un giardinaggio senza stress.
+            </span>
+            <h1 class="fade-up text-5xl md:text-7xl font-black mb-6 uppercase tracking-tight leading-[1.05] text-white" style="animation-delay:.1s">
+                Il tuo giardino, sempre in equilibrio.
+            </h1>
+            <p class="fade-up text-lg md:text-xl mb-12 max-w-2xl mx-auto font-light text-white/80" style="animation-delay:.2s">
+                Flowe monitora e gestisce l'irrigazione in modo intelligente, così le tue piante ricevono sempre ciò di cui hanno bisogno, quando ne hanno bisogno.
+            </p>
+            <a href="#acquisti" class="fade-up btn-dot" style="background:var(--white);color:var(--night);animation-delay:.3s">
+                <span class="dot-icon" style="background:var(--night)"></span>
+                Scopri i Kit
+                <span class="dot-icon" style="background:var(--night)"></span>
+            </a>
+        </div>
+
+    </header> -->
+
+    <section id="galleria" class="py-24 overflow-hidden scroll-mt-20" style="background-color: var(--white);">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-xs uppercase font-bold tracking-[.25em] mb-3 opacity-50" style="color: var(--night);">Come funziona</p>
+            <h2 class="text-4xl font-black uppercase tracking-tight mb-14 fade-up" style="color: var(--night);">L'infrastruttura</h2>
+
+            <div class="flex space-x-6 overflow-x-auto pb-8 snap-x no-scrollbar px-4 xl:justify-center">
+
+                <div class="min-w-[82vw] md:min-w-[360px] h-72 border rounded-2xl snap-start flex flex-col items-center justify-center p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" 
+                     style="background-color: var(--night); border-color: rgba(200,224,182,.2);">
+                    <h3 class="text-lg font-bold mb-2 uppercase tracking-wide" style="color: var(--white);">1. Sensori LoRaWAN</h3>
+                    <p class="text-sm leading-relaxed opacity-80" style="color: var(--white);">Acquisiscono umidità, temperatura e pH direttamente dal suolo a bassissimo consumo energetico.</p>
+                </div>
+
+                <div class="min-w-[82vw] md:min-w-[360px] h-72 border rounded-2xl snap-start flex flex-col items-center justify-center p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" 
+                     style="background-color: var(--night); border-color: rgba(200,224,182,.2);">
+                    <h3 class="text-lg font-bold mb-2 uppercase tracking-wide" style="color: var(--white);">2. Health Index AI</h3>
+                    <p class="text-sm leading-relaxed opacity-80" style="color: var(--white);">Algoritmi predittivi incrociano le metriche del suolo con le previsioni meteo in tempo reale per calcolare l'indice di salute del tuo giardino.</p>
+                </div>
+
+                <div class="min-w-[82vw] md:min-w-[360px] h-72 border rounded-2xl snap-start flex flex-col items-center justify-center p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" 
+                     style="background-color: var(--night); border-color: rgba(200,224,182,.2);">
+                    <h3 class="text-lg font-bold mb-2 uppercase tracking-wide" style="color: var(--white);">3. Dashboard</h3>
+                    <p class="text-sm leading-relaxed opacity-80" style="color: var(--white);">Notifiche push e grafici in tempo reale sul tuo smartphone o terminale web, sempre aggiornati.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- ══════════════ CHI SIAMO ══════════════ -->
+    <section id="chi-siamo" class="relative py-32 md:py-48 bg-cover bg-center scroll-mt-20" style="background-image: url('bg2.jpg');">
+        
+        <div class="absolute inset-0 z-0" style="background: linear-gradient(90deg, rgba(13,22,12,0.85) 0%, rgba(13,22,12,0.4) 100%);"></div>
+
+        <div class="container relative z-10 mx-auto px-6 md:pl-16 flex items-center justify-start h-full">
+            
+            <div class="w-full md:max-w-2xl text-left fade-up">
+                <h3 class="text-4xl md:text-5xl font-black mb-5 uppercase tracking-tight leading-tight text-white">
+                    Chi Siamo e Cosa Facciamo
+                </h3>
+                <div class="w-16 h-[3px] mb-8 rounded-full" style="background:var(--white)"></div>
+                
+                <p class="text-base md:text-lg leading-relaxed text-white/80 font-light">
+                    Siamo un team di sviluppatori e appassionati di agronomia. Il nostro obiettivo è
+                    rendere accessibile l'agricoltura smart, portando le tecnologie usate dalle grandi
+                    aziende agricole direttamente nel giardino di casa tua. Con Flowe, ogni pollice di 
+                    terra diventa intelligente, aiutandoti a coltivare un verde rigoglioso con meno sforzo e più soddisfazione.
+                </p>
+            </div>
+
+        </div>
+    </section>
+    <!-- ══════════════ PUNTI DI FORZA ══════════════ -->
+    <section id="punti-forza" class="py-24 overflow-hidden scroll-mt-20" style="background-color: var(--white);">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-xs uppercase font-bold tracking-[.25em] mb-3 opacity-50" style="color: var(--night);">Perché sceglierci</p>
+            <h2 class="text-4xl font-black mb-14 uppercase tracking-widest fade-up" style="color: var(--night);">
+                Punti di Forza
+            </h2>
+
+            <div class="flex space-x-6 overflow-x-auto pb-8 snap-x no-scrollbar px-4 xl:justify-center">
+                
+                <div class="min-w-[82vw] md:min-w-[360px] h-72 border rounded-2xl snap-start
+                            flex flex-col items-center justify-center p-8 transition-all duration-300
+                            hover:shadow-xl hover:-translate-y-1 fade-up"
+                     style="background-color: var(--night); border-color: rgba(200,224,182,.2);">
+                    <h4 class="text-xl font-bold uppercase tracking-wide mb-4 text-center" style="color: var(--white);">Sensori Intelligenti</h4>
+                    <p class="text-sm leading-relaxed opacity-80 text-center font-light" style="color: var(--white);">
+                        Raccolta dati millimetrica per una cura proattiva del tuo giardino. Monitoraggio costante 24/7 delle condizioni reali del tuo suolo, senza approssimazioni.
+                    </p>
+                </div>
+
+                <div class="min-w-[82vw] md:min-w-[360px] h-72 border rounded-2xl snap-start
+                            flex flex-col items-center justify-center p-8 transition-all duration-300
+                            hover:shadow-xl hover:-translate-y-1 fade-up"
+                     style="background-color: var(--night); border-color: rgba(200,224,182,.2); animation-delay: .1s;">
+                    <h4 class="text-xl font-bold uppercase tracking-wide mb-4 text-center" style="color: var(--white);">Reattività</h4>
+                    <p class="text-sm leading-relaxed opacity-80 text-center font-light" style="color: var(--white);">
+                        Alert in tempo reale via notifiche. Intervieni tempestivamente prima che lo stress idrico danneggi le tue colture.
+                    </p>
+                </div>
+
+                <div class="min-w-[82vw] md:min-w-[360px] h-72 border rounded-2xl snap-start
+                            flex flex-col items-center justify-center p-8 transition-all duration-300
+                            hover:shadow-xl hover:-translate-y-1 fade-up"
+                     style="background-color: var(--night); border-color: rgba(200,224,182,.2); animation-delay: .2s;">
+                    <h4 class="text-xl font-bold uppercase tracking-wide mb-4 text-center" style="color: var(--white);">Sostenibilità</h4>
+                    <p class="text-sm leading-relaxed opacity-80 text-center font-light" style="color: var(--white);">
+                        I dati sono driver per una gestione più efficiente delle risorse. Grazie all'AI integrata potrai fare scelte più consapevoli, evitando gli sprechi e contribuendo a un futuro più verde.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ ACQUISTO ══════════════ -->
+    <section id="acquisti" class="relative py-32 bg-cover bg-center scroll-mt-20 border-t border-gray-100" style="background-image: url('bg3.jpg');">
+        
+        <div class="absolute inset-0 z-0" style="background: rgba(13, 22, 12, 0.82);"></div>
+
+        <div class="container relative z-10 mx-auto px-6 max-w-6xl text-center">
+            <p class="text-xs font-bold uppercase tracking-[.25em] opacity-60 mb-3 text-white">Inizia oggi</p>
+            <h3 class="text-4xl md:text-5xl font-black mb-5 uppercase tracking-widest text-white fade-up">Scegli il tuo Kit</h3>
+            <p class="text-lg mb-14 text-white/80 font-light max-w-xl mx-auto fade-up" style="animation-delay: .1s;">
+                Con Flowe conosci in tempo reale le esigenze del tuo verde. Scegli la configurazione più adatta ai tuoi spazi.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-8 fade-up" style="animation-delay: .2s;">
+                
+                <div class="relative rounded-3xl overflow-hidden flex flex-col" style="background: var(--cream);">
+                    <div class="absolute inset-0 z-20 bg-white/40 backdrop-blur-sm flex items-center justify-center">
+                        <span class="text-xl font-black uppercase tracking-widest py-2 px-4 rounded-xl shadow-lg" style="color: var(--night); background: var(--white); transform: rotate(-10deg);">Coming Soon</span>
+                    </div>
+                    <div class="px-6 py-4 opacity-50" style="background: var(--mid);">
+                        <span class="text-xs uppercase font-bold tracking-widest" style="color: var(--white);">Balcony Kit</span>
+                    </div>
+                    <div class="p-8 flex flex-col flex-1 text-left opacity-50 pointer-events-none">
+                        <h4 class="text-2xl font-black mb-2" style="color: var(--night);">€ 99<span class="text-sm text-gray-500 font-normal">/kit</span></h4>
+                        <p class="text-gray-600 mb-8 text-sm leading-relaxed font-light flex-1">
+                            Ideale per vasi, fioriere e piccoli balconi urbani.<br><br>
+                            <strong class="font-medium">Include:</strong><br>
+                            • 1 Hub LoRaWAN Mini<br>
+                            • 1 Nodo Sensore (Umidità, Temp)<br>
+                            • Accesso App Standard
+                        </p>
+                        <button class="btn-dot w-full justify-center mt-auto" style="background:var(--night);color:var(--white);">
+                            <span class="dot-icon" style="background:var(--white)"></span>
+                            Acquista
+                            <span class="dot-icon" style="background:var(--white)"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative transform md:-translate-y-4 shadow-2xl transition-all duration-300 hover:-translate-y-6 mt-6 md:mt-0 flex flex-col">
+                    
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-[10px] font-bold uppercase tracking-widest py-1.5 px-5 rounded-full z-20 shadow-md" style="background: var(--orange);">
+                        Il più scelto
+                    </div>
+                    
+                    <div class="rounded-3xl overflow-hidden flex flex-col h-full" style="background: var(--white); border: 2px solid var(--night);">
+                        <div class="px-6 py-5 relative z-10 text-center" style="background: var(--night);">
+                            <span class="text-sm uppercase font-bold tracking-widest" style="color: var(--white);">Flowe annual plan</span>
+                        </div>
+                        <div class="p-8 flex flex-col flex-1 text-left">
+                            <h4 class="text-3xl font-black mb-2" style="color: var(--night);">€ 99<span class="text-sm text-gray-500 font-normal">/year</span></h4>
+                            <p class="text-gray-600 mb-8 text-sm leading-relaxed font-light flex-1">
+                                All inclusive, semplice, senza frizioni.<br><br>
+                                <strong class="font-medium">Include:</strong><br>
+                                • Garden Health Index<br>
+                                • Insight e previsioni AI<br>
+                                • Raccomandazioni smart (stato di irrigazione, fertilizzazione, presenza di parassiti)<br>
+                                • Starter sensor kit incluso<br>
+                                <span style="color: var(--night);" class="font-semibold mt-2 block">✓ Spedizione gratuita</span>
+                            </p>
+                            <button onclick="openModal()" class="btn-dot w-full justify-center cursor-pointer mt-auto" style="background:var(--orange);color:var(--white);">
+                                <span class="dot-icon" style="background:var(--white)"></span>
+                                Acquista Ora
+                                <span class="dot-icon" style="background:var(--white)"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative rounded-3xl overflow-hidden flex flex-col" style="background: var(--cream);">
+                    <div class="absolute inset-0 z-20 bg-white/40 backdrop-blur-sm flex items-center justify-center">
+                        <span class="text-xl font-black uppercase tracking-widest py-2 px-4 rounded-xl shadow-lg" style="color: var(--night); background: var(--white); transform: rotate(10deg);">Coming Soon</span>
+                    </div>
+                    <div class="px-6 py-4 opacity-50" style="background: var(--mid);">
+                        <span class="text-xs uppercase font-bold tracking-widest" style="color: var(--white);">Pro Garden Kit</span>
+                    </div>
+                    <div class="p-8 flex flex-col flex-1 text-left opacity-50 pointer-events-none">
+                        <h4 class="text-2xl font-black mb-2" style="color: var(--night);">€ 249<span class="text-sm text-gray-500 font-normal">/kit</span></h4>
+                        <p class="text-gray-600 mb-8 text-sm leading-relaxed font-light flex-1">
+                            Per prati estesi, orti o gestione multi-zona avanzata.<br><br>
+                            <strong class="font-medium">Include:</strong><br>
+                            • 1 Hub LoRaWAN Potenziato<br>
+                            • 4 Nodi Sensore completi<br>
+                            • Alert AI predittivi su misura<br>
+                            • Supporto prioritario
+                        </p>
+                        <button class="btn-dot w-full justify-center mt-auto" style="background:var(--night);color:var(--white);">
+                            <span class="dot-icon" style="background:var(--white)"></span>
+                            Acquista
+                            <span class="dot-icon" style="background:var(--white)"></span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer class="py-8 text-sm border-t" style="background:var(--night);color:var(--white);border-color:rgba(200,224,182,.15)">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 opacity-80">
+            <p>&copy; 2026 Flowe. Tutti i diritti riservati.</p>
+
+        </div>
+    </footer>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PURCHASE MODAL
+    ══════════════════════════════════════════════════════════ -->
+    <div id="purchase-modal" role="dialog" aria-modal="true" aria-label="Modulo di acquisto">
+        <div class="modal-box">
+
+            <!-- Close -->
+            <button id="close-modal-btn"
+                    class="absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors text-gray-500 text-lg font-bold"
+                    aria-label="Chiudi">×</button>
+
+            <!-- Header -->
+            <h3 class="text-2xl font-black uppercase tracking-tight mb-1" style="color:var(--night)">Checkout</h3>
+            <p class="text-sm text-gray-400 mb-8 font-light">Flowe Annual Plan - <strong class="font-semibold text-gray-600">€99,00</strong></p>
+
+            <!-- ── FORM ── -->
+            <form id="purchase-form">
+
+                <!-- Dati personali -->
+                <p class="text-[10px] font-bold uppercase tracking-[.2em] text-gray-400 mb-4">Dati personali</p>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="modal-label">Nome</label>
+                        <input type="text" class="modal-input" placeholder="Mario" required minlength="2">
+                    </div>
+                    <div>
+                        <label class="modal-label">Cognome</label>
+                        <input type="text" class="modal-input" placeholder="Rossi" required minlength="2">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="modal-label">Email</label>
+                    <input type="email" class="modal-input" placeholder="mario.rossi@email.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                </div>
+                <div class="mb-6">
+                    <label class="modal-label">Telefono</label>
+                    <input type="tel" class="modal-input" placeholder="+39 333 123 4567" maxlength="15" oninput="this.value=this.value.replace(/[^+\d]/g,'')" required minlength="9">
+                </div>
+
+                <!-- Spedizione -->
+                <p class="text-[10px] font-bold uppercase tracking-[.2em] text-gray-400 mb-4">Indirizzo di spedizione</p>
+                <div class="mb-4">
+                    <label class="modal-label">Indirizzo</label>
+                    <input type="text" class="modal-input" placeholder="Via Roma 12" required minlength="5">
+                </div>
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="col-span-2">
+                        <label class="modal-label">Città</label>
+                        <input type="text" class="modal-input" placeholder="Milano" required minlength="2">
+                    </div>  
+                    <div>
+                        <label class="modal-label">CAP</label>
+                        <input type="text" class="modal-input" placeholder="20121" maxlength="5" required pattern="\d{5}">
+                    </div>
+                </div>
+
+                <!-- Pagamento -->
+                <p class="text-[10px] font-bold uppercase tracking-[.2em] text-gray-400 mb-4">Pagamento</p>
+                <div class="mb-4 p-4 rounded-xl bg-gray-50 border border-gray-200 flex items-center gap-3">
+                    <span class="text-xl">💳</span>
+                    <span class="text-sm font-medium text-gray-600">Carta di credito / debito</span>
+                    <span class="ml-auto flex gap-2 text-xs font-bold text-gray-400">VISA · MC · AMEX</span>
+                </div>
+                <div class="mb-4">
+                    <label class="modal-label">Numero carta</label>
+                    <input type="text" class="modal-input" placeholder="0000 0000 0000 0000" maxlength="19" required pattern="(?:\d{4} ){3}\d{4}|\d{16}"
+                           oninput="this.value=this.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim()">
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div>
+                        <label class="modal-label">Scadenza</label>
+                        <input type="text" class="modal-input" placeholder="MM/AA" maxlength="5" required pattern="\d{2}/\d{2}"
+                               oninput="this.value=this.value.replace(/\D/g,'').replace(/^(\d{2})(\d)/,'$1/$2')">
+                    </div>
+                    <div>
+                        <label class="modal-label">CVV</label>
+                        <input type="text" class="modal-input" placeholder="123" maxlength="4" required pattern="\d{3,4}"
+                               oninput="this.value=this.value.replace(/\D/g,'')">
+                    </div>
+                </div>
+
+                <!-- Riepilogo -->
+                <div class="rounded-xl p-4 mb-6 border border-gray-200 text-sm">
+                    <div class="flex justify-between mb-2 text-gray-500">
+                        <span>Flowe Annual Plan</span><span>€99,00</span>
+                    </div>
+                    <div class="flex justify-between mb-2 text-gray-500">
+                        <span>Spedizione</span><span class="text-green-600 font-semibold">Gratuita</span>
+                    </div>
+                    <div class="border-t border-gray-200 mt-3 pt-3 flex justify-between font-bold text-base" style="color:var(--night)">
+                        <span>Totale</span><span>€99,00</span>
+                    </div>
+                </div>
+
+                <button id="submit-order-btn"
+                        class="btn-dot w-full justify-center cursor-pointer"
+                        style="background:var(--night);color:var(--white);">
+                    <span class="dot-icon" style="background:var(--white)"></span>
+                    Conferma Ordine
+                    <span class="dot-icon" style="background:var(--white)"></span>
+                </button>
+
+                <p class="text-center text-[10px] text-gray-400 mt-4">
+                    🔒 Pagamento sicuro simulato · I dati non vengono trasmessi
+                </p>
+            </form>
+
+            <!-- SUCCESS OVERLAY -->
+            <div class="success-overlay" id="success-overlay">
+                <div class="checkmark">✓</div>
+                <h3 class="text-2xl font-black uppercase tracking-tight mt-2" style="color:var(--night)">Ordine Confermato!</h3>
+                <p class="text-gray-500 font-light text-sm max-w-xs">
+                    Grazie per il tuo acquisto. Riceverai una email di conferma con il tracking della spedizione entro pochi minuti.
+                </p>
+                <button id="close-success-btn"
+                        class="btn-dot mt-4 cursor-pointer"
+                        style="background:var(--night);color:var(--white);">
+                    <span class="dot-icon" style="background:var(--white)"></span>
+                    Chiudi
+                    <span class="dot-icon" style="background:var(--white)"></span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══════════════ SCRIPTS ══════════════ -->
+    <script>
+        // ── Parallax hide/show bg layers when hero exits viewport ──
+        const heroBg      = document.getElementById('heroBg');
+        const heroOverlay = document.getElementById('heroOverlay');
+        const homeSection = document.getElementById('home');
+
+        function updateParallax() {
+            const rect = homeSection.getBoundingClientRect();
+            const visible = rect.bottom > 0 && rect.top < window.innerHeight;
+            heroBg.style.visibility      = visible ? 'visible' : 'hidden';
+            heroOverlay.style.visibility = visible ? 'visible' : 'hidden';
+        }
+        window.addEventListener('scroll', updateParallax, { passive: true });
+        updateParallax();
+
+        // ── Scroll-triggered fade-up ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // ── Modal ──
+        const modal       = document.getElementById('purchase-modal');
+        //const openBtn     = document.getElementById('open-purchase-btn');
+        const closeBtn    = document.getElementById('close-modal-btn');
+        const submitBtn   = document.getElementById('submit-order-btn');
+        const successOver = document.getElementById('success-overlay');
+        const closeSucc   = document.getElementById('close-success-btn');
+
+        function openModal()  { modal.classList.add('open');  document.body.style.overflow = 'hidden'; }
+        function closeModal() {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+            // reset success overlay after close animation
+            setTimeout(() => successOver.classList.remove('show'), 300);
+        }
+
+        //openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        closeSucc.addEventListener('click', closeModal);
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        // Escape key
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+        // Mock submit
+        const purchaseForm = document.getElementById('purchase-form');
+        
+        submitBtn.addEventListener('click', () => {
+            purchaseForm.classList.add('form-submitted');
+        });
+        // 2. Se i controlli nativi passano, il form lancia l'evento submit
+        purchaseForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            
+            submitBtn.textContent = 'Elaborazione...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                submitBtn.innerHTML = `<span class="dot-icon" style="background:var(--white)"></span>Conferma Ordine<span class="dot-icon" style="background:var(--white)"></span>`;
+                submitBtn.disabled = false;
+                successOver.classList.add('show');
+                
+                // Ripristina il form allo stato iniziale per futuri acquisti
+                purchaseForm.reset(); 
+                purchaseForm.classList.remove('form-submitted');
+            }, 1400);
+        });
+
+        // Card number auto-format
+        document.querySelectorAll('input[placeholder="0000 0000 0000 0000"]').forEach(input => {
+            input.addEventListener('input', function() {
+                let v = this.value.replace(/\D/g,'').substring(0,16);
+                this.value = v.replace(/(.{4})/g,'$1 ').trim();
+            });
+        });
+    </script>
+
+</body>
+</html>
